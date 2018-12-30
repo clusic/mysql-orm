@@ -81,7 +81,6 @@ module.exports = class Table {
       sql += ' WHERE ' + where;
       values = values.concat(wheres);
     }
-    console.log(sql, values)
     return await this.thread.exec(sql, ...values);
   }
 }
