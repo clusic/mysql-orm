@@ -11,6 +11,6 @@ module.exports = async (app, plugin) => {
     await Mysql.connect();
     await Mysql.createTables();
     app.bind('stop', async () => await Mysql.disconnect());
-    app[item.database] = Mysql.thread();
+    app[item.alias || item.database] = Mysql.thread();
   }
 };

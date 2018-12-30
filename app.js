@@ -8,7 +8,7 @@ module.exports = async (app, plugin) => {
   for (let i = 0; i < config.length; i++) {
     const item = config[i];
     const Mysql = new MySQL(item);
-    result[item.database] = Mysql;
+    result[item.alias || item.database] = Mysql;
     await Mysql.connect();
     await Mysql.createTables();
     app.bind('beforeStop', async () => await Mysql.disconnect());
