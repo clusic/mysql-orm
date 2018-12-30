@@ -72,6 +72,10 @@ module.exports = class Table {
     return (await this.thread.exec(sql, ...values)).affectedRows;
   }
 
+  async remove(...values) {
+    await Promise.all(values.map(value => this.delete('??=?', this.primaryKey, value)));
+  }
+
   async exec(columns, where, ...wheres) {
     const isall = columns==='*' || !columns;
     let sql = `SELECT ${isall ? '*' : '??' } FROM ??`, values = [];
