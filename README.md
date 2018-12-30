@@ -48,14 +48,14 @@ mysql.on('exec', (res) => console.log(res));
 
 ## Use in Clusic
 
-在worker中，ctx上会存在一个你在配置[contextName]属性名的对象，指向当前mysql操作对象。
+在worker中，ctx上会存在一个你在配置[database]属性名的对象，指向当前mysql操作对象。
 
 ```javascript
-await ctx[contextName].begin();
-await ctx[contextName].commit();
+await ctx[database].begin();
+await ctx[database].commit();
 ```
 
-在agent中，全局app[contextName]指向对应的操作对象。
+在agent中，全局app[database]指向对应的操作对象。
 
 ```javascript
 app.feed(name, async () => {

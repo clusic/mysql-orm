@@ -39,7 +39,14 @@ module.exports = class Table {
   }
 
   async insert(data) {
-    return await this.thread.exec('INSERT INTO ?? SET ?', this.name, data);
+    let one = false;
+    if (!Array.isArray(data)) {
+      data = [data];
+      one = true;
+    }
+    const result = Promise.all(data.map(res => this.thread.exec('INSERT INTO ?? SET ?', this.name, res)));
+    if (one) return result[0];
+    return result;
   }
 
   async update(value, where, ...wheres) {
@@ -66,11 +73,15 @@ module.exports = class Table {
   }
 
   async exec(columns, where, ...wheres) {
-    let sql = `SELECT ?? FROM ??`, values = [columns, this.name];
+    const isall = columns==='*' || !columns;
+    let sql = `SELECT ${isall ? '*' : '??' } FROM ??`, values = [];
+    if (!isall) values.push(columns);
+    values.push(this.name);
     if ( where ){
       sql += ' WHERE ' + where;
       values = values.concat(wheres);
     }
+    console.log(sql, values)
     return await this.thread.exec(sql, ...values);
   }
 }

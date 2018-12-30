@@ -1,6 +1,6 @@
 {
   "name": "@clusic/mysql-orm",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "The mysql orm plugin of clusic",
   "main": "index.js",
   "repository": {

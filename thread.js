@@ -1,11 +1,10 @@
 const Table = require('./table');
 const getConnection = Symbol('mysql:thread:getConnection');
 module.exports = class Thread {
-  constructor(mysql, getConnection) {
+  constructor(mysql) {
     this.conn = null;
     this.lifes = {};
     this.mysql = mysql;
-    this[getConnection] = getConnection;
     this.init();
   }
 
@@ -45,11 +44,12 @@ module.exports = class Thread {
 
   async getConn() {
     if (this.conn) return this.conn;
-    return this.conn = await this[getConnection]();
+    if (this.mysql.mode === 'pool') return this.conn = await this.mysql.getConnection();
+    return this.conn = this.mysql.dbo;
   }
 
   release() {
-    if (this.mysql.mode = 'pool' && this.conn) {
+    if (this.mysql.mode === 'pool' && this.conn) {
       this.conn.release();
     }
     this.conn = null;

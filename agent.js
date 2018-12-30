@@ -6,11 +6,11 @@ module.exports = async (app, plugin) => {
   
   for (let i = 0; i < config.length; i++) {
     const item = config[i];
-    item.options.connectionLimit = 1;
-    const Mysql = new MySQL(item.options);
+    item.connectionLimit = 1;
+    const Mysql = new MySQL(item);
     await Mysql.connect();
     await Mysql.createTables();
     app.bind('stop', async () => await Mysql.disconnect());
-    app[item.contextName] = Mysql.context();
+    app[item.database] = Mysql.thread();
   }
 };

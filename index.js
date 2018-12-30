@@ -1,6 +1,6 @@
 const NPMMySQL =  require('mysql');
 const Thread = require('./thread');
-module.exports = class MySQL {
+module.exports = class MySQLORM {
   constructor(options) {
     this.options = options;
     this.mode = 'pool';
@@ -36,12 +36,13 @@ module.exports = class MySQL {
     } else {
       conn = this.dbo;
     }
-    const tables = new Promise((resolve, reject) => {
+    const tables = await new Promise((resolve, reject) => {
       conn.query("select table_name from information_schema.tables where table_schema=? and table_type='base table'", [this.options.database], (err, result) => {
         if (err) return reject(err);
         resolve(result.map(res => res.table_name));
       });
     });
+
     for (let i = 0; i < tables.length; i++) {
       this.tables[tables[i]] = await new Promise((resolve, reject) => {
         conn.query(
@@ -81,9 +82,6 @@ module.exports = class MySQL {
   }
 
   thread() {
-    return new Thread(this, async () => {
-      if (this.mode === 'pool') return await this.getConnection();
-      return this.dbo;
-    });
+    return new Thread(this);
   }
 }

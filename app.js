@@ -7,13 +7,13 @@ module.exports = async (app, plugin) => {
   const result = {};
   for (let i = 0; i < config.length; i++) {
     const item = config[i];
-    const Mysql = new MySQL(item.options);
-    result[item.contextName] = Mysql;
+    const Mysql = new MySQL(item);
+    result[item.database] = Mysql;
     await Mysql.connect();
     await Mysql.createTables();
     app.bind('beforeStop', async () => await Mysql.disconnect());
   }
-  
+
   app.use(async (ctx, next) => {
     await each((name, mysql) => {
       const context = mysql.thread();
