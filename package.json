@@ -1,0 +1,27 @@
+{
+  "name": "@clusic/mysql-orm",
+  "version": "1.0.0",
+  "description": "The mysql orm plugin of clusic",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "git+ssh://git@github.com/clusic/mysql-orm.git"
+  },
+  "keywords": [
+    "mysql",
+    "clusic",
+    "orm"
+  ],
+  "plugin": {
+    "framework": "@clusic/rex",
+    "dependencies": ["@clusic/catch"]
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/clusic/mysql-orm/issues"
+  },
+  "homepage": "https://github.com/clusic/mysql-orm#readme",
+  "dependencies": {
+    "mysql": "^2.16.0"
+  }
+}
