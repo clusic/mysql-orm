@@ -44,7 +44,7 @@ module.exports = class Table {
       data = [data];
       one = true;
     }
-    const result = Promise.all(data.map(res => this.thread.exec('INSERT INTO ?? SET ?', this.name, res)));
+    const result = await Promise.all(data.map(res => this.thread.exec('INSERT INTO ?? SET ?', this.name, res)));
     if (one) return result[0];
     return result;
   }
